@@ -52,6 +52,8 @@ const BUILD_DIR = path.join(process.cwd(), "build");
   );
   const port = process.env.K8S_SERVER_PORT || 3000;
 
+  app.on("error", lightship.shutdown);
+
   app.listen(port, () => {
     console.info(
       `Express server Listening on ports [HTTP :${port}] [K8S probes :${process.env.K8S_PROBES_PORT}]`
