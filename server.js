@@ -3,12 +3,18 @@ const express = require("express");
 const compression = require("compression");
 const morgan = require("morgan");
 const { createRequestHandler } = require("@remix-run/express");
+const { createLightship } = require("lightship");
 
 const dotenv = require("dotenv");
 
 const BUILD_DIR = path.join(process.cwd(), "build");
 
 const app = express();
+
+// k8s probes/monitoring
+const lightship = await createLightship({
+  port: +process.env.K8S_PROBES_PORT,
+});
 
 app.use(compression());
 
@@ -43,10 +49,15 @@ app.all(
         mode: process.env.NODE_ENV,
       })
 );
-const port = process.env.PORT || 3000;
+const port = process.env.K8S_SERVER_PORT || 3000;
 
 app.listen(port, () => {
-  console.log(`Express server listening on port ${port}`);
+  console.info(
+    `Express server Listening on ports [HTTP :${port}] [K8S probes :${process.env.K8S_PROBES_PORT}]`
+  );
+
+  // Everything’s running fine, let’s change the server state to SERVER_IS_READY.
+  lightship.signalReady();
 });
 
 function purgeRequireCache() {
