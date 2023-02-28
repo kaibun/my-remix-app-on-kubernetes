@@ -29,11 +29,15 @@
   ],
   "scripts": {
     "build": "remix build",
+    "build:docker": ". ./.env && docker build ${NO_CACHE:+--no-cache} -t registry.kaibun.net/my-remix-app:${APP_VERSION:-latest} .",
+    "deploy": "cd helm-chart && helm upgrade --install -n somenamespace --create-namespace my-remix-app .",
     "dev": "npm-run-all build --parallel \"dev:*\"",
     "dev:node": "cross-env NODE_ENV=development nodemon --require dotenv/config ./server.js --watch ./server.js",
     "dev:remix": "remix watch",
+    "push": ". ./.env && docker push registry.kaibun.net/my-remix-app:${APP_VERSION:-latest}",
     "start": "cross-env NODE_ENV=production node ./server.js",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "undeploy": "helm uninstall -n somenamespace my-remix-app"
   },
   "dependencies": {
     "@remix-run/express": "^1.13.0",
