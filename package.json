@@ -1,6 +1,32 @@
 {
+  "name": "my-remix-app",
+  "version": "0.1.0",
   "private": true,
   "sideEffects": false,
+  "homepage": "https://my-remix-app.kaibun.net/",
+  "description": "A Remix app deployed on Kubernetes.",
+  "author": {
+    "name": "Jean-Denis Vauguet",
+    "email": "contact@kaibun.net",
+    "url": "https://kaibun.net/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kaibun/my-remix-app-on-kubernetes.git"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=14"
+  },
+  "browserslist": [
+    "defaults and supports es6-module",
+    "maintained node versions"
+  ],
+  "eslintIgnore": [
+    "/node_modules",
+    "/build",
+    "/public/build"
+  ],
   "scripts": {
     "build": "remix build",
     "dev": "npm-run-all build --parallel \"dev:*\"",
@@ -31,8 +57,5 @@
     "nodemon": "^2.0.20",
     "npm-run-all": "^4.1.5",
     "typescript": "^4.8.4"
-  },
-  "engines": {
-    "node": ">=14"
   }
 }
