@@ -37,14 +37,36 @@ spec:
             - name: http
               containerPort: 80
               protocol: TCP
+            - name: probes
+              containerPort: 9000
+              protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
-              port: http
+              path: /live
+              port: probes
+            failureThreshold: 3
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 5
           readinessProbe:
             httpGet:
-              path: /
-              port: http
+              path: /ready
+              port: probes
+            failureThreshold: 1
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 5
+          startupProbe:
+            httpGet:
+              path: /live
+              port: probes
+            failureThreshold: 3
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 5
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

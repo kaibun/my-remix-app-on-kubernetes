@@ -1,0 +1,39 @@
+{{ if eq (len (lookup "traefik.containo.us/v1alpha1" "IngressRoute" .Release.Namespace "my-remix-app-ingress")) 0 }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: my-remix-app-ingress
+  namespace: somenamespace
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`my-remix-app.kaibun.net`)
+      kind: Rule
+      services:
+        - name: my-remix-app
+          port: {{ .Values.service.port }}
+      middlewares:
+        - name: default-redirectscheme@kubernetescrd
+          namespace: default
+{{- end }}
+ 
+---
+{{ if eq (len (lookup "traefik.containo.us/v1alpha1" "IngressRoute" .Release.Namespace "my-remix-app-ingress-tls")) 0 }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: my-remix-app-ingress-tls
+  namespace: somenamespace
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`my-remix-app.kaibun.net`)
+      kind: Rule
+      services:
+        - name: my-remix-app
+          port: {{ .Values.service.port }}
+  tls:
+    certResolver: le
+{{- end }}
