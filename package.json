@@ -40,6 +40,10 @@
     "undeploy": "helm uninstall -n somenamespace my-remix-app"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@fontsource/public-sans": "^4.5.12",
+    "@mui/joy": "^5.0.0-alpha.68",
     "@remix-run/express": "^1.13.0",
     "@remix-run/node": "^1.13.0",
     "@remix-run/react": "^1.13.0",
